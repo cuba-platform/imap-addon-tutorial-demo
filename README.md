@@ -2,6 +2,12 @@
 
 This is a demo application for the tutorial video for [CUBA Imap Addon](https://github.com/cuba-platform/imap-addon).
 
+## Versions
+
+Initial ("Skeleton") version of the application that is used as a start point in the tutorial video is in **master** branch.
+
+Please checkout a **final** branch to see the final version of the application with all IMAP & SMTP capabilities.
+
 ## Requirements
 
 * Java 8+
