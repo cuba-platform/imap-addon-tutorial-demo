@@ -1,9 +1,9 @@
 package com.haulmont.taskman.core;
 
+import com.haulmont.addon.imap.api.ImapAPI;
 import com.haulmont.addon.imap.dto.ImapMessageDto;
 import com.haulmont.addon.imap.entity.ImapMessage;
 import com.haulmont.addon.imap.events.NewEmailImapEvent;
-import com.haulmont.addon.imap.service.ImapAPIService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.LoadContext;
@@ -36,7 +36,7 @@ public class ImapMessageBean {
     private DataManager dataManager;
 
     @Inject
-    private ImapAPIService imapApi;
+    private ImapAPI imapApi;
 
     @Inject
     private HtmlToTextConverterService htmlToText;
