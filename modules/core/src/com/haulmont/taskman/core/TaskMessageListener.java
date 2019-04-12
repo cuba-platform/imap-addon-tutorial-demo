@@ -15,7 +15,7 @@ public class TaskMessageListener implements BeforeInsertEntityListener<TaskMessa
     public static final String NAME = "taskman_TaskMessageListener";
 
     @Inject
-    private ResponseEmailAsyncSenderBean emailService;
+    private ResponseEmailAsyncSenderBean emailSender;
 
     @Override
     public void onBeforeInsert(TaskMessage message, EntityManager entityManager) {
@@ -24,7 +24,7 @@ public class TaskMessageListener implements BeforeInsertEntityListener<TaskMessa
             task.setState(TaskState.REPLIED);
             entityManager.persist(task);
 
-            emailService.sendReplyTaskResponse(task, message);
+            emailSender.sendReplyTaskResponse(task, message);
         }
     }
 }

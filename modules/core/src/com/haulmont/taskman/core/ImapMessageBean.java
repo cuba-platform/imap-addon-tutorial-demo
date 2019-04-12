@@ -36,19 +36,19 @@ public class ImapMessageBean {
     private DataManager dataManager;
 
     @Inject
-    private ImapAPI imapApi;
-
-    @Inject
-    private HtmlToTextConverterService htmlToText;
+    private ImapAPI imapAPI;
 
     @Inject
     private Metadata metadata;
 
     @Inject
+    private HtmlToTextConverterService htmlToText;
+
+    @Inject
     private UniqueNumbersService uniqueNumbersAPI;
 
     @Inject
-    private ResponseEmailAsyncSenderBean emailService;
+    private ResponseEmailAsyncSenderBean emailSender;
 
     @EventListener
     @Transactional
@@ -57,16 +57,17 @@ public class ImapMessageBean {
         log.info(String.format("Process email subject = '%s', id = %d", imapMessage.getCaption(), imapEvent.getMessageId()));
 
         if (isTaskMessageExistsForImapMessage(imapMessage)) {
-            log.info(String.format("The message has already been processed. message id = %s", imapMessage.getMessageId()));
+            log.info(String.format("the message has already been processed, id = %s", imapMessage.getMessageId()));
+            return;
         }
 
-        ImapMessageDto imapMessageDto = imapApi.fetchMessage(imapMessage);
+        ImapMessageDto imapMessageDto = imapAPI.fetchMessage(imapMessage);
         String subject = imapMessageDto.getSubject();
 
         TaskMessage message = buildNewTaskMessage(imapMessage, imapMessageDto);
 
-
         boolean isNewTask = false;
+
         Task task = retrieveTaskByEmailSubject(subject);
         if (task == null) {
             task = buildNewTask(message);
@@ -78,9 +79,9 @@ public class ImapMessageBean {
         dataManager.commit(task, message);
 
         if (isNewTask) {
-            emailService.sendNewTaskResponse(task, message, imapMessageDto);
+            emailSender.sendNewTaskResponse(task, message, imapMessageDto);
         } else {
-            emailService.sendUpdateTaskResponse(task, message, imapMessageDto);
+            emailSender.sendUpdateTaskResponse(task, message, imapMessageDto);
         }
     }
 
