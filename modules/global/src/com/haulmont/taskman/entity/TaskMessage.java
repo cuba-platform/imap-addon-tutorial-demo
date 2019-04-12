@@ -1,19 +1,13 @@
 package com.haulmont.taskman.entity;
 
+import com.haulmont.addon.imap.entity.ImapMessage;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Listeners;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @NamePattern("%s, %s|reporter,subject")
@@ -40,6 +34,29 @@ public class TaskMessage extends StandardEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "TASK_ID")
     protected Task task;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "IMAP_MESSAGE_ID")
+    protected ImapMessage imapMessage;
+
+    @Column(name = "ORIGINAL_IMAP_MESSAGE_ID")
+    protected String originalImapMessageId;
+
+    public String getOriginalImapMessageId() {
+        return originalImapMessageId;
+    }
+
+    public void setOriginalImapMessageId(String originalImapMessageId) {
+        this.originalImapMessageId = originalImapMessageId;
+    }
+
+    public ImapMessage getImapMessage() {
+        return imapMessage;
+    }
+
+    public void setImapMessage(ImapMessage imapMessage) {
+        this.imapMessage = imapMessage;
+    }
 
     public MessageDirection getDirection() {
         return direction == null ? null : MessageDirection.fromId(direction);

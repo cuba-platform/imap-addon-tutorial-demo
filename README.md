@@ -14,6 +14,11 @@ Please checkout a **final** branch to see the final version of the application w
 * [CUBA platform 7.*](https://www.cuba-platform.com/framework)
 * [CUBA Imap Addon 1.3.*](https://www.cuba-platform.com/marketplace/imap)
 
+## What in the "final" branch
+
+This branch contains the fully-functional CUBA application that demonstrates principles of IMAP addon API usage.
+
+
 
 
 

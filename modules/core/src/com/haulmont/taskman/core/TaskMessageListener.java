@@ -8,10 +8,14 @@ import com.haulmont.taskman.entity.TaskMessage;
 import com.haulmont.taskman.entity.TaskState;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+
 @Component(TaskMessageListener.NAME)
 public class TaskMessageListener implements BeforeInsertEntityListener<TaskMessage> {
     public static final String NAME = "taskman_TaskMessageListener";
 
+    @Inject
+    private ResponseEmailAsyncSenderBean emailService;
 
     @Override
     public void onBeforeInsert(TaskMessage message, EntityManager entityManager) {
@@ -19,6 +23,8 @@ public class TaskMessageListener implements BeforeInsertEntityListener<TaskMessa
             Task task = entityManager.find(Task.class, message.getTask().getId(), "task-state-view");
             task.setState(TaskState.REPLIED);
             entityManager.persist(task);
+
+            emailService.sendReplyTaskResponse(task, message);
         }
     }
 }
